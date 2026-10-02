@@ -1,0 +1,6 @@
+cryptography>=42
+ortools==9.15.6755
+PyInstaller>=6.0
+reportlab>=4.2
+arabic-reshaper>=3.0
+python-bidi>=0.6

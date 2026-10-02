@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@page { size: A4; margin: 14mm; }
+body { font-family: "DejaVu Sans", "Noto Naskh Arabic", sans-serif; direction: rtl; font-size: 11px; color:#111; }
+h1,h2,h3 { text-align:center; margin: 8px 0; }
+.meta { border:1px solid #333; padding:8px; margin-bottom:12px; }
+table { width:100%; border-collapse:collapse; margin: 8px 0 16px; page-break-inside:auto; }
+th,td { border:1px solid #444; padding:5px; text-align:center; vertical-align:middle; }
+th { background:#e9eef5; }
+.section { page-break-before: always; }
+.warning { border:1px solid #999; padding:5px; margin:4px 0; }
+.small { font-size:9px; }
+</style>
+</head>
+<body>
+<h1>التنظيم البيداغوجي</h1>
+<h2>السنة الدراسية {{ school.academic_year }}</h2>
+<div class="meta">
+<strong>المدرسة:</strong> {{ school.name }} &nbsp; | &nbsp;
+<strong>المندوبية:</strong> {{ school.delegation }} &nbsp; | &nbsp;
+<strong>الدائرة:</strong> {{ school.district }} &nbsp; | &nbsp;
+<strong>المدير(ة):</strong> {{ school.director }}
+</div>
+<h2>إسناد المواد والأقسام</h2>
+<table><thead><tr><th>القسم</th><th>المادة</th><th>المدرس(ة)</th><th>الحجم الأسبوعي</th></tr></thead><tbody>
+{% for r in assignments %}<tr><td>{{r.class_name}}</td><td>{{r.subject}}</td><td>{{r.teacher_name}}</td><td>{{r.hours}}</td></tr>{% endfor %}
+</tbody></table>
+{% if warnings %}<h3>ملاحظات التحقق</h3>{% for w in warnings %}<div class="warning">{{w}}</div>{% endfor %}{% endif %}
+
+{% for t in timetables %}
+<div class="section">
+<h2>جدول أوقات {{ t.class_name }} — {{ t.grade_name }}</h2>
+<table><thead><tr><th>اليوم</th><th>من</th><th>إلى</th><th>المادة</th><th>المدرس(ة)</th><th>المدة</th></tr></thead><tbody>
+{% for r in t.rows %}<tr><td>{{r.day}}</td><td>{{r.start}}</td><td>{{r.end}}</td><td>{{r.subject}}</td><td>{{r.teacher}}</td><td>{{r.duration}}</td></tr>{% endfor %}
+</tbody></table>
+</div>
+{% endfor %}
+
+{% for t in teacher_tables %}
+<div class="section">
+<h2>جدول المدرس(ة): {{t.teacher.name}}</h2>
+<p style="text-align:center">الاختصاص: {{t.teacher.specialty}}</p>
+<table><thead><tr><th>اليوم</th><th>من</th><th>إلى</th><th>القسم</th><th>المادة</th></tr></thead><tbody>
+{% for r in t.rows %}<tr><td>{{r.day}}</td><td>{{r.start}}</td><td>{{r.end}}</td><td>{{r.class_name}}</td><td>{{r.subject}}</td></tr>{% endfor %}
+</tbody></table>
+</div>
+{% endfor %}
+</body></html>
